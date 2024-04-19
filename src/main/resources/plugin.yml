@@ -1,0 +1,4 @@
+name: ZombiesBase
+version: '${project.version}'
+main: dijon.zombiesbase.ZombiesBase
+api-version: '1.20'
