@@ -1,4 +1,4 @@
-package dijon.zombiesbase;
+package dijon.zombiesbase.utility;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -39,19 +39,19 @@ public class Raycaster {
         raycast();
     }
 
-    public void moveForward(){
+    private void moveForward(){
         initalLoc.add(p.getEyeLocation().getDirection().multiply(0.5));
     }
-    public boolean blockCheck(){
+    private boolean blockCheck(){
         return p.getWorld().getBlockAt(initalLoc).getType() != Material.AIR;
     }
-    public boolean entityCheck(){
+    private boolean entityCheck(){
         entities = p.getWorld().getNearbyEntities(initalLoc, 0.2, 0.2, 0.2);
         entities.remove(p);
         return !entities.isEmpty();
     }
 
-    public void raycast(){
+    private void raycast(){
         dist += 0.5;
         if(!(blockCheck() || entityCheck())){
             if(dist >= maxDist){

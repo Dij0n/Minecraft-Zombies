@@ -1,15 +1,12 @@
 package dijon.zombiesbase.tick;
 
-import dijon.zombiesbase.Raycaster;
+import dijon.zombiesbase.utility.Raycaster;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.FluidCollisionMode;
 import org.bukkit.Particle;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.RayTraceResult;
 
 public class TestRunnable extends BukkitRunnable {
 

@@ -21,13 +21,13 @@ public class givegun implements CommandExecutor {
 
         switch (strings[0]){
             case "red":
-                p.getInventory().addItem(GunType.REDGUN);
+                p.getInventory().addItem(GunType.RED.getItemStack());
                 break;
             case "green":
-                p.getInventory().addItem(GunType.GREENGUN);
+                p.getInventory().addItem(GunType.GREEN.getItemStack());
                 break;
             case "blue":
-                p.getInventory().addItem(GunType.BLUEGUN);
+                p.getInventory().addItem(GunType.BLUE.getItemStack());
                 break;
 
         }

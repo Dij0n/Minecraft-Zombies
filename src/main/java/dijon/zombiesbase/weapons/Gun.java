@@ -3,36 +3,34 @@ package dijon.zombiesbase.weapons;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class Gun extends ItemStack {
+public class Gun {
 
-    int gunVal;
-    Color color; //TEMP
-    double damage;
+    int maxAmmo;
+    int maxClip;
+    int damage;
+    int fireRate;
+    int customModelData;
+    //TEMP!!!!
+    Color color;
 
-    int ammo;
-    int ammoMax;
-    double fireSpeed;
-
-    public Gun(int gunVal, Color color, double damage, double fireSpeed, int ammoMax){
-        super(Material.PRISMARINE_SHARD);
-        this.gunVal = gunVal;
-        this.color = color;
+    public Gun(int customModelData, int maxAmmo, int maxClip, int damage, int fireRate, Color color) {
+        this.maxAmmo = maxAmmo;
+        this.maxClip = maxClip;
         this.damage = damage;
-        this.fireSpeed = fireSpeed;
-        this.ammoMax = ammoMax;
-        ammo = ammoMax;
+        this.fireRate = fireRate;
+        this.customModelData = customModelData;
+        this.color = color;
     }
 
-    public void decreaseAmmo(){
-        ammo--;
-    }
-    public void reload(){
-        ammo = ammoMax;
+    public ItemStack getItemStack(){
+        ItemStack item = new ItemStack(Material.PRISMARINE_SHARD);
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(customModelData);
+        item.setItemMeta(meta);
+        return item;
     }
 
 
-    public int getGunVal() {
-        return gunVal;
-    }
 }
