@@ -24,6 +24,10 @@ public class Raycaster {
     double maxDist;
     double dist = 0;
 
+    double interval;
+    Particle particle;
+    Particle.DustOptions dust;
+
 
     //These are found using the Raycast() method
     TargetType target;
@@ -36,7 +40,18 @@ public class Raycaster {
         this.initalLoc = p.getEyeLocation();
         this.maxDist = maxDist;
 
-        raycast();
+        raycast(false);
+    }
+
+    public Raycaster(Player p, double maxDist, double interval, Particle particle, Particle.DustOptions dust) {
+        this.p = p;
+        this.initalLoc = p.getEyeLocation();
+        this.maxDist = maxDist;
+        this.particle = particle;
+        this.dust = dust;
+        this.interval = interval;
+
+        raycast(true);
     }
 
     private void moveForward(){
@@ -51,8 +66,11 @@ public class Raycaster {
         return !entities.isEmpty();
     }
 
-    private void raycast(){
+    private void raycast(boolean intervalEnabled){
         dist += 0.5;
+        if(dist % interval == 0 && intervalEnabled){
+            initalLoc.getWorld().spawnParticle(particle, initalLoc, 5, dust);
+        }
         if(!(blockCheck() || entityCheck())){
             if(dist >= maxDist){
                 target = TargetType.AIR;
@@ -60,7 +78,7 @@ public class Raycaster {
                 return;
             };
             moveForward();
-            raycast();
+            raycast(intervalEnabled);
         }else{
             if(blockCheck()){
                 blockFound = p.getWorld().getBlockAt(initalLoc);
@@ -72,6 +90,18 @@ public class Raycaster {
             finalLoc = initalLoc;
         }
 
+    }
+
+    public boolean isHeadshot(){
+        Entity victim = getEntity();
+        if (victim == null) return false;
+        double distToFloor = victim.getLocation().distance(finalLoc);
+
+        if(distToFloor >= 1.64D){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public TargetType getTarget() {
