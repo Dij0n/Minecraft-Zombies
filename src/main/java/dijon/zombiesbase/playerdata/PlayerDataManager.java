@@ -27,7 +27,26 @@ public class PlayerDataManager {
             playerData.put(p, pd);
             return GunType.NONE;
         }
+    }
 
+    public static void setStatus(Player p, Status s){
+        if(playerData.containsKey(p)){
+            playerData.get(p).setStatus(s);
+        }else{
+            PlayerData pd = new PlayerData();
+            pd.setStatus(s);
+            playerData.put(p, pd);
+        }
+    }
+    public static Status getStatus(Player p){
+        if(playerData.containsKey(p)){
+            return playerData.get(p).getStatus();
+        }else{
+            PlayerData pd = new PlayerData();
+            pd.setStatus(Status.IDLE);
+            playerData.put(p, pd);
+            return Status.IDLE;
+        }
     }
 
 

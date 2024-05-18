@@ -41,7 +41,7 @@ public class Gun {
     }
 
     public static boolean isGun(ItemStack item){
-        return (item.getItemMeta().hasCustomModelData() && item.getType().equals(Material.PRISMARINE_SHARD));
+        return (item.getItemMeta().hasCustomModelData() && (item.getType().equals(Material.PRISMARINE_SHARD)));
     }
 
 

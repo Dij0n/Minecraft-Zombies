@@ -2,6 +2,7 @@ package dijon.zombiesbase.weapons;
 
 import dijon.zombiesbase.ZombiesBase;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
+import dijon.zombiesbase.utility.PluginGrabber;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,8 +24,10 @@ public class HoldingHandler implements Listener {
 
         if(Gun.isGun(inHand)){
             int customMD = inHand.getItemMeta().getCustomModelData();
-            PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(customMD));
-
+            Gun gun = GunType.getGun(customMD);
+            PlayerDataManager.setMainGun(e.getPlayer(), gun);
+            Shooter shooter = new Shooter(e.getPlayer(), gun, e.getNewSlot());
+            shooter.runTaskTimer(PluginGrabber.plugin, 0, 1);
         }else{
             PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
         }
