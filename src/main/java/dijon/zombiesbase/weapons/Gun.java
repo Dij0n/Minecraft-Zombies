@@ -13,7 +13,7 @@ public class Gun {
     int maxAmmo;
     int maxClip;
     int damage;
-    int fireRate;
+    int firePerSecond;
     int customModelData;
     Sound sound;
     Particle particle;
@@ -21,11 +21,11 @@ public class Gun {
 
 
 
-    public Gun(int customModelData, int maxAmmo, int maxClip, int damage, int fireRate, Sound sound, Particle particle, Particle.DustOptions dust) {
+    public Gun(int customModelData, int maxAmmo, int maxClip, int damage, int firePerSecond, Sound sound, Particle particle, Particle.DustOptions dust) {
         this.maxAmmo = maxAmmo;
         this.maxClip = maxClip;
         this.damage = damage;
-        this.fireRate = fireRate;
+        this.firePerSecond = firePerSecond;
         this.customModelData = customModelData;
         this.particle = particle;
         this.dust = dust;

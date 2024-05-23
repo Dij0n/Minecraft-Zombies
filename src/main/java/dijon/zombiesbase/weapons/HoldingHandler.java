@@ -19,6 +19,10 @@ public class HoldingHandler implements Listener {
     @EventHandler
     public void detectHolding(PlayerItemHeldEvent e){
 
+        //---------THIS IS TEMPORARY-----------------------
+        //---------GUNS ARE SET BY HOLDING FOR NOW---------
+        //---------WILL BE CHANGED TO WALL BUYS AND BOX----
+
         if(e.getPlayer().getInventory().getItem(e.getNewSlot()) == null) return;
         ItemStack inHand = e.getPlayer().getInventory().getItem(e.getNewSlot());
 
@@ -26,8 +30,6 @@ public class HoldingHandler implements Listener {
             int customMD = inHand.getItemMeta().getCustomModelData();
             Gun gun = GunType.getGun(customMD);
             PlayerDataManager.setMainGun(e.getPlayer(), gun);
-            Shooter shooter = new Shooter(e.getPlayer(), gun, e.getNewSlot());
-            shooter.runTaskTimer(PluginGrabber.plugin, 0, 1);
         }else{
             PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
         }

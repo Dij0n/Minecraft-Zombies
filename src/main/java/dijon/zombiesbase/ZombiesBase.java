@@ -15,7 +15,7 @@ public final class ZombiesBase extends JavaPlugin {
 
         getLogger().info("If you're seeing this, it works");
 
-        new TestRunnable().runTaskTimer(this, 0, 10);
+        new TestRunnable().runTaskTimer(this, 0, 1);
 
         //-------UTILITY---------
         new PluginGrabber(this);

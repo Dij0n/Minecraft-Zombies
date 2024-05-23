@@ -20,8 +20,11 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+
 public class ShootHandler implements Listener {
 
+    public static HashMap<Player, Shooter> holdMap = new HashMap<>();
     public ShootHandler(ZombiesBase plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -34,11 +37,31 @@ public class ShootHandler implements Listener {
 
             ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
             if (!Gun.isGun(item)) return;
+            Gun gun = GunType.getGun(item.getItemMeta().getCustomModelData());
             PlayerDataManager.setStatus(e.getPlayer(), Status.SHOOTING);
-            Bukkit.getScheduler().runTaskLater(PluginGrabber.plugin, () -> PlayerDataManager.setStatus(e.getPlayer(), Status.IDLE), 3);
+
+            refreshHolder(e.getPlayer());
+
+            addHolder(e.getPlayer(), gun);
 
         }
     }
+
+    public void refreshHolder(Player p){
+        if(!holdMap.containsKey(p)) return;
+        holdMap.get(p).refresh();
+    }
+
+    public void addHolder(Player p, Gun gun){
+        if(holdMap.containsKey(p)) return;
+        holdMap.put(p, new Shooter(p, gun));
+    }
+
+
+
+
+
+
 
 
 
