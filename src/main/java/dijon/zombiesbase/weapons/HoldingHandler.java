@@ -26,12 +26,13 @@ public class HoldingHandler implements Listener {
         if(e.getPlayer().getInventory().getItem(e.getNewSlot()) == null) return;
         ItemStack inHand = e.getPlayer().getInventory().getItem(e.getNewSlot());
 
-        if(Gun.isGun(inHand)){
+        if(GunType.isGun(inHand)){
             int customMD = inHand.getItemMeta().getCustomModelData();
-            Gun gun = GunType.getGun(customMD);
+            Gun gun = new Gun(GunType.getGun(customMD));
+            if(ShootHandler.holdMap.get(e.getPlayer()) != null) ShootHandler.holdMap.get(e.getPlayer()).fullCancel();
             PlayerDataManager.setMainGun(e.getPlayer(), gun);
         }else{
-            PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
+            //PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
         }
     }
 }

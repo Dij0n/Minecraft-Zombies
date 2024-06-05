@@ -17,23 +17,20 @@ public class Shooter extends BukkitRunnable {
 
     int slotId;
     Player p;
-    Gun gun;
+    Gun gunCopy;
     double firePerSecond;
     double timer;
     int holdTimer;
-    int holdMax;
 
-    public Shooter(Player p, Gun gun){
+    public Shooter(Player p){
         this.p = p;
-        this.gun = gun;
-        this.firePerSecond = gun.firePerSecond;
+        this.gunCopy = new Gun(PlayerDataManager.getMainGun(p));
+        this.firePerSecond = gunCopy.firePerSecond;
         if(firePerSecond != 0) firePerSecond = 1/firePerSecond;
         firePerSecond *= 20;
         timer = firePerSecond + 1;
-        runTaskTimer(PluginGrabber.plugin, 0, 1);
-
         holdTimer = (int) Math.max(5, firePerSecond);
-        holdMax = holdTimer;
+        runTaskTimer(PluginGrabber.plugin, 0, 1);
     }
 
     @Override
@@ -50,21 +47,23 @@ public class Shooter extends BukkitRunnable {
 
         holdTimer--;
         if(holdTimer <= 0){
-            ShootHandler.holdMap.remove(p);
-            cancel();
+            fullCancel();
         }
 
     }
 
     public void refresh(){
-        if(holdTimer <= 5) holdTimer = holdMax;
+        if(holdTimer <= 5) holdTimer = 5;
     }
 
     public void shoot(){
-        Raycaster ray = new Raycaster(p, 20, 4, gun.particle, gun.dust);
+        PlayerDataManager.getMainGun(p).reduceAmmo();
+        p.sendMessage(String.valueOf(PlayerDataManager.getMainGun(p).ammo));
 
-        p.getWorld().spawnParticle(gun.particle, ray.getFinalLoc(), 5, gun.dust);
-        p.playSound(p, gun.sound, 1, 2);
+        Raycaster ray = new Raycaster(p, 20, 4, gunCopy.particle, gunCopy.dust);
+
+        p.getWorld().spawnParticle(gunCopy.particle, ray.getFinalLoc(), 5, gunCopy.dust);
+        p.playSound(p, gunCopy.sound, 1, 2);
 
         if(ray.getBlockFound() != null){
             p.sendMessage("Block Found - " + ray.getBlockFound().getType());
@@ -79,6 +78,12 @@ public class Shooter extends BukkitRunnable {
                 p.sendMessage("Entity Found - " + victim);
             }
         }
+    }
+
+    public void fullCancel(){
+        ShootHandler.holdMap.remove(p);
+        PlayerDataManager.setStatus(p, Status.IDLE);
+        cancel();
     }
 
     

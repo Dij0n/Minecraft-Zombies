@@ -12,6 +12,7 @@ public class Gun {
 
     int maxAmmo;
     int maxClip;
+    int ammo;
     int damage;
     int firePerSecond;
     int customModelData;
@@ -30,6 +31,19 @@ public class Gun {
         this.particle = particle;
         this.dust = dust;
         this.sound = sound;
+        this.ammo = maxAmmo;
+    }
+
+    public Gun(Gun gun){
+        this.maxAmmo = gun.maxAmmo;
+        this.maxClip = gun.maxClip;
+        this.damage = gun.damage;
+        this.firePerSecond = gun.firePerSecond;
+        this.customModelData = gun.customModelData;
+        this.particle = gun.particle;
+        this.dust = gun.dust;
+        this.sound = gun.sound;
+        this.ammo = gun.maxAmmo;
     }
 
     public ItemStack getItemStack(){
@@ -40,8 +54,8 @@ public class Gun {
         return item;
     }
 
-    public static boolean isGun(ItemStack item){
-        return (item.getItemMeta().hasCustomModelData() && (item.getType().equals(Material.PRISMARINE_SHARD)));
+    public void reduceAmmo(){
+        this.ammo--;
     }
 
 

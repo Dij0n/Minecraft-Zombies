@@ -36,13 +36,11 @@ public class ShootHandler implements Listener {
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 
             ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
-            if (!Gun.isGun(item)) return;
-            Gun gun = GunType.getGun(item.getItemMeta().getCustomModelData());
+            if (!GunType.isGun(item) && /*----TEMP*/ !item.getType().equals(Material.PRISMARINE_CRYSTALS)/*TEMP----*/) return;
+
             PlayerDataManager.setStatus(e.getPlayer(), Status.SHOOTING);
-
             refreshHolder(e.getPlayer());
-
-            addHolder(e.getPlayer(), gun);
+            addHolder(e.getPlayer());
 
         }
     }
@@ -52,9 +50,9 @@ public class ShootHandler implements Listener {
         holdMap.get(p).refresh();
     }
 
-    public void addHolder(Player p, Gun gun){
+    public void addHolder(Player p){
         if(holdMap.containsKey(p)) return;
-        holdMap.put(p, new Shooter(p, gun));
+        holdMap.put(p, new Shooter(p));
     }
 
 

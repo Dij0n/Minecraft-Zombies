@@ -1,7 +1,9 @@
 package dijon.zombiesbase.weapons;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.inventory.ItemStack;
 
 public class GunType {
 
@@ -21,6 +23,10 @@ public class GunType {
 
     public static Gun getGun(int index){
         return gunTypes[index];
+    }
+
+    public static boolean isGun(ItemStack item){
+        return (item.getItemMeta().hasCustomModelData() && (item.getType().equals(Material.PRISMARINE_SHARD)));
     }
 
 }
