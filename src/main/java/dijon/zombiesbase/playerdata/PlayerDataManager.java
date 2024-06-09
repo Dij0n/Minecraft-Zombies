@@ -2,7 +2,9 @@ package dijon.zombiesbase.playerdata;
 
 import dijon.zombiesbase.weapons.Gun;
 import dijon.zombiesbase.weapons.GunType;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 
@@ -47,6 +49,24 @@ public class PlayerDataManager {
             playerData.put(p, pd);
             return Status.IDLE;
         }
+    }
+
+
+
+
+
+
+    //HELPERS
+
+    public static Location getGunSmokeLocation(Player p){
+        //---Vector magic to place the empty ammo smoke---
+        Vector playerDirectionYZeroed = p.getEyeLocation().getDirection().setY(0);
+        playerDirectionYZeroed.rotateAroundY(Math.PI/2);
+        Vector playerLookPerpAxis = p.getEyeLocation().getDirection().crossProduct(playerDirectionYZeroed);
+        Vector rotatedAroundPep = p.getEyeLocation().getDirection().rotateAroundAxis(playerLookPerpAxis, -Math.PI/4);
+        rotatedAroundPep.rotateAroundAxis(p.getEyeLocation().getDirection(), Math.PI/9);
+        return p.getEyeLocation().add(rotatedAroundPep.multiply(0.7));
+        //---Vector magic to place the empty ammo smoke---
     }
 
 

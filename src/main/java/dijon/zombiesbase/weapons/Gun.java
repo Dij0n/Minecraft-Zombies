@@ -31,7 +31,7 @@ public class Gun {
         this.particle = particle;
         this.dust = dust;
         this.sound = sound;
-        this.ammo = maxAmmo;
+        this.ammo = maxClip;
     }
 
     public Gun(Gun gun){
@@ -43,7 +43,7 @@ public class Gun {
         this.particle = gun.particle;
         this.dust = gun.dust;
         this.sound = gun.sound;
-        this.ammo = gun.maxAmmo;
+        this.ammo = gun.maxClip;
     }
 
     public ItemStack getItemStack(){
@@ -56,6 +56,10 @@ public class Gun {
 
     public void reduceAmmo(){
         this.ammo--;
+    }
+
+    public void reload(){
+        this.ammo = this.maxClip;
     }
 
 

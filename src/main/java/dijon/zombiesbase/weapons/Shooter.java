@@ -5,6 +5,8 @@ import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
+import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
@@ -12,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class Shooter extends BukkitRunnable {
 
@@ -57,8 +61,18 @@ public class Shooter extends BukkitRunnable {
     }
 
     public void shoot(){
-        PlayerDataManager.getMainGun(p).reduceAmmo();
         p.sendMessage(String.valueOf(PlayerDataManager.getMainGun(p).ammo));
+
+        if(PlayerDataManager.getMainGun(p).ammo == 0){
+
+
+            p.getWorld().spawnParticle(gunCopy.particle, PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
+
+            p.playSound(p, Sound.ITEM_FLINTANDSTEEL_USE, 1, 0.75f);
+            return;
+        } //Clip is empty
+
+        PlayerDataManager.getMainGun(p).reduceAmmo();
 
         Raycaster ray = new Raycaster(p, 20, 4, gunCopy.particle, gunCopy.dust);
 
