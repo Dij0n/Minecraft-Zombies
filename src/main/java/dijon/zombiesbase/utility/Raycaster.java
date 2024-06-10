@@ -3,6 +3,7 @@ package dijon.zombiesbase.utility;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.RayTraceResult;
@@ -63,6 +64,9 @@ public class Raycaster {
     private boolean entityCheck(){
         entities = p.getWorld().getNearbyEntities(initalLoc, 0.2, 0.2, 0.2);
         entities.remove(p);
+        for(Entity e : entities){
+            if(!(e instanceof LivingEntity)) entities.remove(e);
+        }
         return !entities.isEmpty();
     }
 

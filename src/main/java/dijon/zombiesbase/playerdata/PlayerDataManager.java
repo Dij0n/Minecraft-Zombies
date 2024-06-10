@@ -30,7 +30,6 @@ public class PlayerDataManager {
             return GunType.NONE;
         }
     }
-
     public static void setStatus(Player p, Status s){
         if(playerData.containsKey(p)){
             playerData.get(p).setStatus(s);
@@ -48,6 +47,31 @@ public class PlayerDataManager {
             pd.setStatus(Status.IDLE);
             playerData.put(p, pd);
             return Status.IDLE;
+        }
+    }
+    public static void increasePoints(Player p, int points){
+        if(playerData.containsKey(p)){
+            playerData.get(p).incPoints(points);
+        }else{
+            PlayerData pd = new PlayerData();
+            playerData.put(p, pd);
+        }
+    }
+    public static void decreasePoints(Player p, int points){
+        if(playerData.containsKey(p)){
+            playerData.get(p).decPoints(points);
+        }else{
+            PlayerData pd = new PlayerData();
+            playerData.put(p, pd);
+        }
+    }
+    public static int getPoints(Player p){
+        if(playerData.containsKey(p)){
+            return playerData.get(p).getPoints();
+        }else{
+            PlayerData pd = new PlayerData();
+            playerData.put(p, pd);
+            return 0;
         }
     }
 

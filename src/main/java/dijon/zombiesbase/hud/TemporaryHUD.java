@@ -14,9 +14,11 @@ public class TemporaryHUD extends BukkitRunnable {
             Gun gun = PlayerDataManager.getMainGun(p);
             int ammo = gun.getAmmo();
             int reserveAmmo = gun.getReserveAmmo();
+            int points = PlayerDataManager.getPoints(p);
 
 
-            p.sendActionBar("§l" + ammo + "§o§l|§r " + reserveAmmo);
+            p.sendActionBar("§b§o§l" + 1000 + "               §r§l" + 30 + " §o| §r" + 240);
+
 
         }
     }

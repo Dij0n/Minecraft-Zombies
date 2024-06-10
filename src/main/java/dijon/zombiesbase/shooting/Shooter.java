@@ -9,6 +9,7 @@ import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -57,35 +58,41 @@ public class Shooter extends BukkitRunnable {
 
     public void shoot(){
 
-        p.sendMessage(String.valueOf(PlayerDataManager.getMainGun(p).getAmmo()));
-
         if(PlayerDataManager.getMainGun(p).getAmmo() == 0){
 
             p.getWorld().spawnParticle(gunCopy.getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
             p.playSound(p, Sound.ITEM_FLINTANDSTEEL_USE, 1, 0.75f);
             return;
-        } //Clip is empty
+        } //Check clip is empty
 
         PlayerDataManager.getMainGun(p).reduceAmmo();
-
         Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust());
-
         p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
         p.playSound(p, gunCopy.getSound(), 1, 2);
 
-        if(ray.getBlockFound() != null){
-            p.sendMessage("Block Found - " + ray.getBlockFound().getType());
-        }
-        if(ray.getEntities() != null){
-            EntityType victim = ray.getEntity().getType();
+        if(ray.getEntities() != null) shotLanded(ray);
+
+    }
+
+    public void shotLanded(Raycaster ray){
+        LivingEntity victim = (LivingEntity) ray.getEntity();
+
+        if(ray.isHeadshot()){
+            p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, ray.getFinalLoc(), 3);
+            p.playSound(p, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 2);
+        } //TEMP --- Particle stuff
+
+        PlayerDataManager.increasePoints(p, 10);
+
+        if(victim.getHealth() - gunCopy.getDamage() <= 0){
             if(ray.isHeadshot()){
-                p.sendMessage("Entity Found - " + victim + " HEADSHOT!!!");
-                p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, ray.getFinalLoc(), 3);
-                p.playSound(p, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 2);
+                PlayerDataManager.increasePoints(p, 90); //Ten less since they get the 10 points from the hit
             }else{
-                p.sendMessage("Entity Found - " + victim);
+                PlayerDataManager.increasePoints(p, 50);
             }
         }
+
+        victim.damage(gunCopy.getDamage());
     }
 
     public void fullCancel(){
