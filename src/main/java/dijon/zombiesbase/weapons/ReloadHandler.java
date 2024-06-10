@@ -25,8 +25,9 @@ public class ReloadHandler implements Listener {
             Player p = e.getPlayer();
             PlayerDataManager.getMainGun(e.getPlayer()).reload();
             p.playSound(p, Sound.BLOCK_WOODEN_TRAPDOOR_OPEN, 10, 0.75f);
-            p.getWorld().spawnParticle(PlayerDataManager.getMainGun(p).particle, PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.YELLOW, 1.0F));
+            p.getWorld().spawnParticle(PlayerDataManager.getMainGun(p).getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.YELLOW, 1.0F));
             e.setCancelled(true);
+
         }
     }
 

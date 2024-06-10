@@ -13,6 +13,7 @@ public class Gun {
     int maxAmmo;
     int maxClip;
     int ammo;
+    int reserveAmmo;
     int damage;
     int firePerSecond;
     int customModelData;
@@ -31,7 +32,9 @@ public class Gun {
         this.particle = particle;
         this.dust = dust;
         this.sound = sound;
+
         this.ammo = maxClip;
+        this.reserveAmmo = maxAmmo;
     }
 
     public Gun(Gun gun){
@@ -43,7 +46,9 @@ public class Gun {
         this.particle = gun.particle;
         this.dust = gun.dust;
         this.sound = gun.sound;
+
         this.ammo = gun.maxClip;
+        this.reserveAmmo = maxAmmo;
     }
 
     public ItemStack getItemStack(){
@@ -59,8 +64,59 @@ public class Gun {
     }
 
     public void reload(){
-        this.ammo = this.maxClip;
+
+        if(ammo == maxClip) return; //Don't reload on a full clip
+        if(reserveAmmo == 0) return; //Don't reload if reserve is empty
+
+        int ammoToReload = maxClip - ammo;
+
+        if(reserveAmmo < ammoToReload){ //If reserve is not full enough to fully reload, do a partial reload
+            ammo += reserveAmmo;
+            reserveAmmo = 0;
+        }else{
+            reserveAmmo -= ammoToReload; //If all's good all's good
+            ammo = maxClip;
+        }
+
     }
 
 
+
+    //----------------------------
+    //---GETTER AND SETTER HELL---
+    //----------------------------
+
+    //"This is where we send the evil ones"
+
+
+    public int getMaxAmmo() {
+        return maxAmmo;
+    }
+    public int getMaxClip() {
+        return maxClip;
+    }
+    public int getAmmo() {
+        return ammo;
+    }
+    public int getReserveAmmo() {
+        return reserveAmmo;
+    }
+    public int getDamage() {
+        return damage;
+    }
+    public int getFirePerSecond() {
+        return firePerSecond;
+    }
+    public int getCustomModelData() {
+        return customModelData;
+    }
+    public Sound getSound() {
+        return sound;
+    }
+    public Particle getParticle() {
+        return particle;
+    }
+    public Particle.DustOptions getDust() {
+        return dust;
+    }
 }

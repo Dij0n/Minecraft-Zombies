@@ -29,7 +29,7 @@ public class Shooter extends BukkitRunnable {
     public Shooter(Player p){
         this.p = p;
         this.gunCopy = new Gun(PlayerDataManager.getMainGun(p));
-        this.firePerSecond = gunCopy.firePerSecond;
+        this.firePerSecond = gunCopy.getFirePerSecond();
         if(firePerSecond != 0) firePerSecond = 1/firePerSecond;
         firePerSecond *= 20;
         timer = firePerSecond + 1;
@@ -61,23 +61,22 @@ public class Shooter extends BukkitRunnable {
     }
 
     public void shoot(){
-        p.sendMessage(String.valueOf(PlayerDataManager.getMainGun(p).ammo));
 
-        if(PlayerDataManager.getMainGun(p).ammo == 0){
+        p.sendMessage(String.valueOf(PlayerDataManager.getMainGun(p).getAmmo()));
 
+        if(PlayerDataManager.getMainGun(p).getAmmo() == 0){
 
-            p.getWorld().spawnParticle(gunCopy.particle, PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
-
+            p.getWorld().spawnParticle(gunCopy.getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
             p.playSound(p, Sound.ITEM_FLINTANDSTEEL_USE, 1, 0.75f);
             return;
         } //Clip is empty
 
         PlayerDataManager.getMainGun(p).reduceAmmo();
 
-        Raycaster ray = new Raycaster(p, 20, 4, gunCopy.particle, gunCopy.dust);
+        Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust());
 
-        p.getWorld().spawnParticle(gunCopy.particle, ray.getFinalLoc(), 5, gunCopy.dust);
-        p.playSound(p, gunCopy.sound, 1, 2);
+        p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
+        p.playSound(p, gunCopy.getSound(), 1, 2);
 
         if(ray.getBlockFound() != null){
             p.sendMessage("Block Found - " + ray.getBlockFound().getType());
