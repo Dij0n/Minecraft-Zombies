@@ -1,6 +1,7 @@
 package dijon.zombiesbase;
 
 import dijon.zombiesbase.commands.givegun;
+import dijon.zombiesbase.hud.TemporaryHUD;
 import dijon.zombiesbase.tick.TestRunnable;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.weapons.GunType;
@@ -29,6 +30,9 @@ public final class ZombiesBase extends JavaPlugin {
 
         //-------COMMANDS----------
         this.getCommand("givegun").setExecutor(new givegun());
+
+        //------RUNNABLES----------
+        new TemporaryHUD().runTaskTimer(this, 0, 1);
 
     }
 
