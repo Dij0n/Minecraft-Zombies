@@ -1,4 +1,4 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;

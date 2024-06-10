@@ -1,10 +1,8 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting;
 
-import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.block.data.type.Bed;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 

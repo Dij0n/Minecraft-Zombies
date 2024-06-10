@@ -4,10 +4,10 @@ import dijon.zombiesbase.commands.givegun;
 import dijon.zombiesbase.hud.TemporaryHUD;
 import dijon.zombiesbase.tick.TestRunnable;
 import dijon.zombiesbase.utility.PluginGrabber;
-import dijon.zombiesbase.weapons.GunType;
-import dijon.zombiesbase.weapons.HoldingHandler;
-import dijon.zombiesbase.weapons.ReloadHandler;
-import dijon.zombiesbase.weapons.ShootHandler;
+import dijon.zombiesbase.shooting.GunType;
+import dijon.zombiesbase.shooting.listeners.HoldingHandler;
+import dijon.zombiesbase.shooting.listeners.ReloadHandler;
+import dijon.zombiesbase.shooting.listeners.ShootHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ZombiesBase extends JavaPlugin {

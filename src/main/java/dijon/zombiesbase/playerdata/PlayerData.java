@@ -1,7 +1,7 @@
 package dijon.zombiesbase.playerdata;
 
-import dijon.zombiesbase.weapons.Gun;
-import dijon.zombiesbase.weapons.GunType;
+import dijon.zombiesbase.shooting.Gun;
+import dijon.zombiesbase.shooting.GunType;
 
 public class PlayerData {
 

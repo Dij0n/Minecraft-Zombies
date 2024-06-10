@@ -1,6 +1,6 @@
 package dijon.zombiesbase.commands;
 
-import dijon.zombiesbase.weapons.GunType;
+import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

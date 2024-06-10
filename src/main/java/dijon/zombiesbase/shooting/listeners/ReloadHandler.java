@@ -1,7 +1,8 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
+import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Particle;

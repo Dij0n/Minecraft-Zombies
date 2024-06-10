@@ -1,10 +1,10 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
-import dijon.zombiesbase.utility.PluginGrabber;
+import dijon.zombiesbase.shooting.Gun;
+import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;

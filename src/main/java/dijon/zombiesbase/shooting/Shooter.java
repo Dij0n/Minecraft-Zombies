@@ -1,21 +1,16 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting;
 
-import dijon.zombiesbase.playerdata.PlayerData;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
+import dijon.zombiesbase.shooting.listeners.ShootHandler;
 import org.bukkit.Color;
-import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 public class Shooter extends BukkitRunnable {
 

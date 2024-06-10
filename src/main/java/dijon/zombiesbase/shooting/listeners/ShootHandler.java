@@ -1,24 +1,17 @@
-package dijon.zombiesbase.weapons;
+package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
-import dijon.zombiesbase.utility.PluginGrabber;
-import dijon.zombiesbase.utility.Raycaster;
+import dijon.zombiesbase.shooting.GunType;
+import dijon.zombiesbase.shooting.Shooter;
 import org.bukkit.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
