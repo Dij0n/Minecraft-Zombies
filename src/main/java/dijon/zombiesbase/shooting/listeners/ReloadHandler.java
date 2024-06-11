@@ -1,7 +1,9 @@
 package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
+import dijon.zombiesbase.playerdata.PlayerData;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
+import dijon.zombiesbase.playerdata.Status;
 import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -24,9 +26,8 @@ public class ReloadHandler implements Listener {
 
         if(GunType.isGun(e.getOffHandItem())){
             Player p = e.getPlayer();
-            PlayerDataManager.getMainGun(e.getPlayer()).reload();
-            p.playSound(p, Sound.BLOCK_WOODEN_TRAPDOOR_OPEN, 10, 0.75f);
-            p.getWorld().spawnParticle(PlayerDataManager.getMainGun(p).getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.YELLOW, 1.0F));
+            PlayerDataManager.reload(p);
+
             e.setCancelled(true);
 
         }

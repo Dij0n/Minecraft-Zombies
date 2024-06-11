@@ -65,7 +65,14 @@ public class Raycaster {
         entities = p.getWorld().getNearbyEntities(initalLoc, 0.2, 0.2, 0.2);
         entities.remove(p);
         for(Entity e : entities){
-            if(!(e instanceof LivingEntity)) entities.remove(e);
+            if(!(e instanceof LivingEntity)){
+                entities.remove(e);
+                continue;
+            }
+            LivingEntity livingE = (LivingEntity) e;
+            if(livingE.getHealth() < 0){
+                entities.remove(e);
+            }
         }
         return !entities.isEmpty();
     }
@@ -89,7 +96,7 @@ public class Raycaster {
                 target = TargetType.BLOCK;
             }
             if(entityCheck()){
-                target = TargetType.ENTITY;
+                target = TargetType.ENTITY; //Entities have a higher priority, and so are checked last
             }
             finalLoc = initalLoc;
         }
@@ -101,11 +108,7 @@ public class Raycaster {
         if (victim == null) return false;
         double distToFloor = victim.getLocation().distance(finalLoc);
 
-        if(distToFloor >= 1.64D){
-            return true;
-        }else{
-            return false;
-        }
+        return (distToFloor >= 1.64D);
     }
 
     public TargetType getTarget() {

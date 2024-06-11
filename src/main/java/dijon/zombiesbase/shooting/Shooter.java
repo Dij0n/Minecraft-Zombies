@@ -20,7 +20,7 @@ public class Shooter extends BukkitRunnable {
     Gun gunCopy;
     double firePerSecond;
     double timer;
-    int holdTimer;
+    double holdTimer;
 
     public Shooter(Player p){
         this.p = p;
@@ -29,7 +29,7 @@ public class Shooter extends BukkitRunnable {
         if(firePerSecond != 0) firePerSecond = 1/firePerSecond;
         firePerSecond *= 20;
         timer = firePerSecond + 1;
-        holdTimer = (int) Math.max(5, firePerSecond);
+        holdTimer = Math.max(5, firePerSecond);
         runTaskTimer(PluginGrabber.plugin, 0, 1);
     }
 
@@ -58,12 +58,13 @@ public class Shooter extends BukkitRunnable {
 
     public void shoot(){
 
-        if(PlayerDataManager.getMainGun(p).getAmmo() == 0){
+        if(PlayerDataManager.getStatus(p).equals(Status.RELOADING)) return;
 
+        if(PlayerDataManager.getMainGun(p).getAmmo() == 0){
             p.getWorld().spawnParticle(gunCopy.getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
             p.playSound(p, Sound.ITEM_FLINTANDSTEEL_USE, 1, 0.75f);
             return;
-        } //Check clip is empty
+        } //Check if clip is empty
 
         PlayerDataManager.getMainGun(p).reduceAmmo();
         Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust());

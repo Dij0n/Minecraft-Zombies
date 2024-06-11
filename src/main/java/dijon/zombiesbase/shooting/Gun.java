@@ -12,8 +12,9 @@ public class Gun {
     int maxClip;
     int ammo;
     int reserveAmmo;
-    int damage;
-    int firePerSecond;
+    double damage;
+    double firePerSecond;
+    double reloadTime;
     int customModelData;
     Sound sound;
     Particle particle;
@@ -21,11 +22,12 @@ public class Gun {
 
 
 
-    public Gun(int customModelData, int maxAmmo, int maxClip, int damage, int firePerSecond, Sound sound, Particle particle, Particle.DustOptions dust) {
+    public Gun(int customModelData, int maxAmmo, int maxClip, double damage, double firePerSecond, double reloadTime, Sound sound, Particle particle, Particle.DustOptions dust) {
         this.maxAmmo = maxAmmo;
         this.maxClip = maxClip;
         this.damage = damage;
         this.firePerSecond = firePerSecond;
+        this.reloadTime = reloadTime;
         this.customModelData = customModelData;
         this.particle = particle;
         this.dust = dust;
@@ -40,13 +42,14 @@ public class Gun {
         this.maxClip = gun.maxClip;
         this.damage = gun.damage;
         this.firePerSecond = gun.firePerSecond;
+        this.reloadTime = gun.reloadTime;
         this.customModelData = gun.customModelData;
         this.particle = gun.particle;
         this.dust = gun.dust;
         this.sound = gun.sound;
 
         this.ammo = gun.maxClip;
-        this.reserveAmmo = maxAmmo;
+        this.reserveAmmo = gun.maxAmmo;
     }
 
     public ItemStack getItemStack(){
@@ -76,6 +79,8 @@ public class Gun {
             ammo = maxClip;
         }
 
+
+
     }
 
 
@@ -99,11 +104,14 @@ public class Gun {
     public int getReserveAmmo() {
         return reserveAmmo;
     }
-    public int getDamage() {
+    public double getDamage() {
         return damage;
     }
-    public int getFirePerSecond() {
+    public double getFirePerSecond() {
         return firePerSecond;
+    }
+    public double getReloadTime() {
+        return reloadTime;
     }
     public int getCustomModelData() {
         return customModelData;
