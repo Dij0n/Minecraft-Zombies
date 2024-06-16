@@ -31,6 +31,8 @@ public class ShootHandler implements Listener {
             ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
             if (!GunType.isGun(item) && /*----TEMP*/ !item.getType().equals(Material.PRISMARINE_CRYSTALS)/*TEMP----*/) return;
 
+            if(PlayerDataManager.getStatus(e.getPlayer()).equals(Status.RELOADING)) return;
+
             PlayerDataManager.setStatus(e.getPlayer(), Status.SHOOTING);
             refreshHolder(e.getPlayer());
             addHolder(e.getPlayer());

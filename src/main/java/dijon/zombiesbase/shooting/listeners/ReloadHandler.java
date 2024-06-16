@@ -22,10 +22,12 @@ public class ReloadHandler implements Listener {
 
     @EventHandler
     public void reloadKeyPress(PlayerSwapHandItemsEvent e){
+        Player p = e.getPlayer();
+
         if(e.getOffHandItem() == null) return;
 
         if(GunType.isGun(e.getOffHandItem())){
-            Player p = e.getPlayer();
+
             PlayerDataManager.reload(p);
 
             e.setCancelled(true);

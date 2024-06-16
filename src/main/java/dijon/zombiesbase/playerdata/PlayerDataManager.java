@@ -76,19 +76,23 @@ public class PlayerDataManager {
         }
     }
     public static void reload(Player p){
+
+        if(getMainGun(p).getAmmo() >= getMainGun(p).getMaxClip()) return;
+        if(getStatus(p).equals(Status.RELOADING)) return;
+
         long reloadTicks = (long) (getMainGun(p).getReloadTime() * 20);
         setStatus(p, Status.RELOADING);
 
         //PRE-RELOAD EFFECTS
 
         p.playSound(p, Sound.BLOCK_WOODEN_TRAPDOOR_CLOSE, 10, 0.75f);
-        p.getWorld().spawnParticle(PlayerDataManager.getMainGun(p).getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.SILVER, 1.0F));
+        p.getWorld().spawnParticle(getMainGun(p).getParticle(), getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.SILVER, 1.0F));
 
         //POST-RELOAD EFFECTS
 
         Bukkit.getScheduler().runTaskLater(PluginGrabber.plugin, () -> {
             p.playSound(p, Sound.BLOCK_WOODEN_TRAPDOOR_OPEN, 10, 0.75f);
-            p.getWorld().spawnParticle(PlayerDataManager.getMainGun(p).getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.YELLOW, 1.0F));
+            p.getWorld().spawnParticle(getMainGun(p).getParticle(), getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.YELLOW, 1.0F));
             setStatus(p, Status.IDLE);
             getMainGun(p).reload();
         }, reloadTicks);

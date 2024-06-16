@@ -1,5 +1,7 @@
 package dijon.zombiesbase.utility;
 
+import dijon.zombiesbase.playerdata.PlayerData;
+import dijon.zombiesbase.playerdata.PlayerDataManager;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -10,6 +12,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.Collection;
+import java.util.Random;
 
 public class Raycaster {
 
@@ -24,10 +27,10 @@ public class Raycaster {
     Player p;
     double maxDist;
     double dist = 0;
-
     double interval;
     Particle particle;
     Particle.DustOptions dust;
+    Vector bloomifiedVector;
 
 
     //These are found using the Raycast() method
@@ -51,12 +54,14 @@ public class Raycaster {
         this.particle = particle;
         this.dust = dust;
         this.interval = interval;
+        bloomifiedVector = randomBloomModifier(p.getEyeLocation().getDirection());
+        bloomifiedVector.multiply(0.5);
 
         raycast(true);
     }
 
     private void moveForward(){
-        initalLoc.add(p.getEyeLocation().getDirection().multiply(0.5));
+        initalLoc.add(bloomifiedVector);
     }
     private boolean blockCheck(){
         return p.getWorld().getBlockAt(initalLoc).getType() != Material.AIR;
@@ -64,16 +69,7 @@ public class Raycaster {
     private boolean entityCheck(){
         entities = p.getWorld().getNearbyEntities(initalLoc, 0.2, 0.2, 0.2);
         entities.remove(p);
-        for(Entity e : entities){
-            if(!(e instanceof LivingEntity)){
-                entities.remove(e);
-                continue;
-            }
-            LivingEntity livingE = (LivingEntity) e;
-            if(livingE.getHealth() < 0){
-                entities.remove(e);
-            }
-        }
+        entities.removeIf(e -> !(e instanceof LivingEntity));
         return !entities.isEmpty();
     }
 
@@ -109,6 +105,31 @@ public class Raycaster {
         double distToFloor = victim.getLocation().distance(finalLoc);
 
         return (distToFloor >= 1.64D);
+    }
+
+    public Vector randomBloomModifier(Vector eyeVector){
+
+        Vector newEyeVector = eyeVector.clone();
+
+        Vector xAxis = eyeVector.rotateAroundY(90);
+        xAxis.setY(0);
+        Vector yAxis = new Vector(0, 1, 0);
+
+        double range = PlayerDataManager.getMainGun(p).getBloomAngle();
+
+        newEyeVector.rotateAroundAxis(yAxis, generateRandomRotation(range));
+        newEyeVector.rotateAroundAxis(xAxis, generateRandomRotation(range));
+
+        newEyeVector.normalize();
+
+        return newEyeVector;
+    }
+
+    public double generateRandomRotation(double range){
+        double modifier = Math.random();
+        modifier *= range * 2;
+        modifier -= range;
+        return modifier;
     }
 
     public TargetType getTarget() {

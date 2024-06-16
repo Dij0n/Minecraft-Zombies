@@ -16,13 +16,14 @@ public class Gun {
     double firePerSecond;
     double reloadTime;
     int customModelData;
+    double bloomAngle;
     Sound sound;
     Particle particle;
     Particle.DustOptions dust;
 
 
 
-    public Gun(int customModelData, int maxAmmo, int maxClip, double damage, double firePerSecond, double reloadTime, Sound sound, Particle particle, Particle.DustOptions dust) {
+    public Gun(int customModelData, int maxAmmo, int maxClip, double damage, double firePerSecond, double reloadTime, double bloomAngle, Sound sound, Particle particle, Particle.DustOptions dust) {
         this.maxAmmo = maxAmmo;
         this.maxClip = maxClip;
         this.damage = damage;
@@ -32,6 +33,7 @@ public class Gun {
         this.particle = particle;
         this.dust = dust;
         this.sound = sound;
+        this.bloomAngle = bloomAngle;
 
         this.ammo = maxClip;
         this.reserveAmmo = maxAmmo;
@@ -47,6 +49,7 @@ public class Gun {
         this.particle = gun.particle;
         this.dust = gun.dust;
         this.sound = gun.sound;
+        this.bloomAngle = gun.bloomAngle;
 
         this.ammo = gun.maxClip;
         this.reserveAmmo = gun.maxAmmo;
@@ -115,6 +118,9 @@ public class Gun {
     }
     public int getCustomModelData() {
         return customModelData;
+    }
+    public double getBloomAngle() {
+        return bloomAngle;
     }
     public Sound getSound() {
         return sound;
