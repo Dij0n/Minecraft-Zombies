@@ -2,6 +2,8 @@ package dijon.zombiesbase;
 
 import dijon.zombiesbase.commands.givegun;
 import dijon.zombiesbase.hud.TemporaryHUD;
+import dijon.zombiesbase.perks.PerkHandler;
+import dijon.zombiesbase.playerdata.JoinInitializer;
 import dijon.zombiesbase.tick.TestRunnable;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.shooting.GunType;
@@ -27,6 +29,8 @@ public final class ZombiesBase extends JavaPlugin {
         new ShootHandler(this);
         new HoldingHandler(this);
         new ReloadHandler(this);
+        new JoinInitializer(this);
+        new PerkHandler(this);
 
         //-------COMMANDS----------
         this.getCommand("givegun").setExecutor(new givegun());

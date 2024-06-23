@@ -1,10 +1,12 @@
 package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
+import dijon.zombiesbase.playerdata.PlayerDataController;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.shooting.Gun;
 import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -23,14 +25,17 @@ public class HoldingHandler implements Listener {
         //---------GUNS ARE SET BY HOLDING FOR NOW---------
         //---------WILL BE CHANGED TO WALL BUYS AND BOX----
 
-        if(e.getPlayer().getInventory().getItem(e.getNewSlot()) == null) return;
-        ItemStack inHand = e.getPlayer().getInventory().getItem(e.getNewSlot());
+        Player p = e.getPlayer();
+        PlayerDataController pd = new PlayerDataController(p);
+
+        if(p.getInventory().getItem(e.getNewSlot()) == null) return;
+        ItemStack inHand = p.getInventory().getItem(e.getNewSlot());
 
         if(GunType.isGun(inHand)){
             int customMD = inHand.getItemMeta().getCustomModelData();
             Gun gun = new Gun(GunType.getGun(customMD));
-            if(ShootHandler.holdMap.get(e.getPlayer()) != null) ShootHandler.holdMap.get(e.getPlayer()).fullCancel();
-            PlayerDataManager.setMainGun(e.getPlayer(), gun);
+            if(ShootHandler.holdMap.get(e.getPlayer()) != null) ShootHandler.holdMap.get(p).fullCancel();
+            pd.setMainGun(gun);
         }else{
             //PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
         }

@@ -1,5 +1,7 @@
 package dijon.zombiesbase.playerdata;
 
+import dijon.zombiesbase.perks.Perk;
+import dijon.zombiesbase.perks.PerkType;
 import dijon.zombiesbase.shooting.Gun;
 import dijon.zombiesbase.shooting.GunType;
 import dijon.zombiesbase.utility.PluginGrabber;
@@ -7,49 +9,60 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerDataManager {
     private static HashMap<Player, PlayerData> playerData = new HashMap<>();
 
-    public static void setMainGun(Player p, Gun gun){
-        if(playerData.containsKey(p)){
-            playerData.get(p).setGun(gun);
-        }else{
+    //-----INITALIZER-----
+    public static void initialize(Player p){
+        if(!playerData.containsKey(p)){
             PlayerData pd = new PlayerData();
-            pd.setGun(gun);
             playerData.put(p, pd);
         }
+    }
+
+    //-------GUNS-------
+    public static void setMainGun(Player p, Gun gun){
+        playerData.get(p).setGun(gun);
     }
     public static Gun getMainGun(Player p){
-        if(playerData.containsKey(p)){
-            return playerData.get(p).getGun();
-        }else{
-            PlayerData pd = new PlayerData();
-            pd.setGun(GunType.NONE);
-            playerData.put(p, pd);
-            return GunType.NONE;
-        }
+        return playerData.get(p).getGun();
     }
+
+
+    //-------STATUS------
     public static void setStatus(Player p, Status s){
-        if(playerData.containsKey(p)){
-            playerData.get(p).setStatus(s);
-        }else{
-            PlayerData pd = new PlayerData();
-            pd.setStatus(s);
-            playerData.put(p, pd);
-        }
+        playerData.get(p).setStatus(s);
     }
     public static Status getStatus(Player p){
-        if(playerData.containsKey(p)){
-            return playerData.get(p).getStatus();
-        }else{
-            PlayerData pd = new PlayerData();
-            pd.setStatus(Status.IDLE);
-            playerData.put(p, pd);
-            return Status.IDLE;
-        }
+        return playerData.get(p).getStatus();
     }
+
+    //-------PERKS-------
+    public static void addPerk(Player p, Perk perk){
+        playerData.get(p).addPerk(perk);
+        perk.getAction().runP(p);
+    }
+    public static boolean hasPerk(Player p, Perk perk){
+        return playerData.get(p).getPerks().contains(perk);
+    }
+    public static void resetPerks(Player p){
+        playerData.get(p).getPerks().clear();
+        p.clearActivePotionEffects();
+    }
+    public static ArrayList<Perk> getPerks(Player p){
+        return playerData.get(p).getPerks();
+    }
+
+
+
+
+
+
+
+    //------POINTS------
     public static void increasePoints(Player p, int points){
         if(playerData.containsKey(p)){
             playerData.get(p).incPoints(points);
@@ -75,12 +88,20 @@ public class PlayerDataManager {
             return 0;
         }
     }
+
+
+
     public static void reload(Player p){
 
         if(getMainGun(p).getAmmo() >= getMainGun(p).getMaxClip()) return;
         if(getStatus(p).equals(Status.RELOADING)) return;
 
         long reloadTicks = (long) (getMainGun(p).getReloadTime() * 20);
+
+        if(PlayerDataManager.hasPerk(p, PerkType.SPEEDCOLA)){ //PERK CHECK
+            reloadTicks /= 2;
+        }
+
         setStatus(p, Status.RELOADING);
 
         //PRE-RELOAD EFFECTS
@@ -105,7 +126,7 @@ public class PlayerDataManager {
 
 
 
-    //HELPERS
+    //--------HELPERS--------
 
     public static Location getGunSmokeLocation(Player p){
         //---Vector magic to place the empty ammo smoke---
@@ -117,6 +138,8 @@ public class PlayerDataManager {
         return p.getEyeLocation().add(rotatedAroundPep.multiply(0.7));
         //---Vector magic to place the empty ammo smoke---
     }
+
+
 
 
 }

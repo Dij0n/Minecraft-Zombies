@@ -1,11 +1,14 @@
 package dijon.zombiesbase.playerdata;
 
+import dijon.zombiesbase.perks.Perk;
 import dijon.zombiesbase.shooting.Gun;
 import dijon.zombiesbase.shooting.GunType;
 import dijon.zombiesbase.utility.PluginGrabber;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
 
 public class PlayerDataController {
 
@@ -33,6 +36,25 @@ public class PlayerDataController {
     public Status getStatus(){
         return PlayerDataManager.getStatus(p);
     }
+
+    public void addPerk(Perk perk){
+        PlayerDataManager.addPerk(p, perk);
+    }
+    public boolean hasPerk(Perk perk){
+        return PlayerDataManager.hasPerk(p, perk);
+    }
+    public void resetPerks(){
+        PlayerDataManager.resetPerks(p);
+    }
+    public ArrayList<Perk> getPerks(){
+        return PlayerDataManager.getPerks(p);
+    }
+
+
+
+
+
+
     public void increasePoints(int points){
         PlayerDataManager.increasePoints(p, points);
     }
