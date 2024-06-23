@@ -24,4 +24,6 @@ public class PerkType {
 
     public static Perk WIDOWSWINE = new Perk("Widow's Wine", 4000, new WidowAction());
 
+    public static Perk VULTURE = new Perk("Vulture Aid", 3000, new VultureAction());
+
 }
