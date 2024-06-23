@@ -7,6 +7,7 @@ import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
 import dijon.zombiesbase.shooting.listeners.ShootHandler;
 import org.bukkit.Color;
+import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
@@ -23,13 +24,18 @@ public class Shooter extends BukkitRunnable {
     double timer;
     double holdTimer;
 
+    float pitch;
+    float sumPitch;
+    Location recoilLocation;
+
+
     public Shooter(Player p){
         this.p = p;
         this.gunCopy = new Gun(PlayerDataManager.getMainGun(p));
         this.firePerSecond = gunCopy.getFirePerSecond();
 
         if(PlayerDataManager.hasPerk(p, PerkType.DOUBLETAP)){ //PERK CHECK
-            firePerSecond *= 2;
+            firePerSecond *= 1.33;
             gunCopy.damage *= 2;
         }
 
@@ -43,6 +49,7 @@ public class Shooter extends BukkitRunnable {
 
     @Override
     public void run() {
+        recoilAdjust();
 
         if(timer >= firePerSecond){
             shoot();
@@ -79,6 +86,8 @@ public class Shooter extends BukkitRunnable {
         p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
         p.playSound(p, gunCopy.getSound(), 1, 2);
 
+
+
         if(ray.getEntities() != null) shotLanded(ray);
 
     }
@@ -108,6 +117,26 @@ public class Shooter extends BukkitRunnable {
         ShootHandler.holdMap.remove(p);
         PlayerDataManager.setStatus(p, Status.IDLE);
         cancel();
+    }
+
+    private void recoilAdjust(){ //MAYBE????????????
+        if(pitch == 0) return;
+        setPitch();
+        if(pitch > 0){
+            sumPitch = pitch;
+            pitch = -6;
+        }
+        if(pitch < 0){
+            pitch++;
+            sumPitch += pitch;
+            if(pitch >= 0 || sumPitch <= 0) pitch = 0;
+        }
+    }
+
+    private void setPitch(){
+        recoilLocation = p.getEyeLocation();
+        recoilLocation.setPitch(recoilLocation.getPitch() + pitch);
+        p.teleport(recoilLocation);
     }
 
     
