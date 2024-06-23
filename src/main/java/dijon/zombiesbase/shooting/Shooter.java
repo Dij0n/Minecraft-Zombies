@@ -86,7 +86,7 @@ public class Shooter extends BukkitRunnable {
         p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
         p.playSound(p, gunCopy.getSound(), 1, 2);
 
-
+        pitch = 15; //20 is also a good choice
 
         if(ray.getEntities() != null) shotLanded(ray);
 
