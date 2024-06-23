@@ -28,6 +28,9 @@ public class Shooter extends BukkitRunnable {
     float sumPitch;
     Location recoilLocation;
 
+    boolean fullAuto;
+    boolean semiAutoShot;
+
 
     public Shooter(Player p){
         this.p = p;
@@ -52,7 +55,10 @@ public class Shooter extends BukkitRunnable {
         recoilAdjust();
 
         if(timer >= firePerSecond){
-            shoot();
+            if(!semiAutoShot && gunCopy.fullAuto){ //Detection for semi-automatic guns
+                shoot();
+            }
+            semiAutoShot = true;
             timer = 0;
         }
 

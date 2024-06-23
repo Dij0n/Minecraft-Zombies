@@ -17,13 +17,14 @@ public class Gun {
     double reloadTime;
     int customModelData;
     double bloomAngle;
+    boolean fullAuto;
     Sound sound;
     Particle particle;
     Particle.DustOptions dust;
 
 
 
-    public Gun(int customModelData, int maxAmmo, int maxClip, double damage, double firePerSecond, double reloadTime, double bloomAngle, Sound sound, Particle particle, Particle.DustOptions dust) {
+    public Gun(int customModelData, int maxAmmo, int maxClip, double damage, double firePerSecond, double reloadTime, double bloomAngle, boolean fullAuto, Sound sound, Particle particle, Particle.DustOptions dust) {
         this.maxAmmo = maxAmmo;
         this.maxClip = maxClip;
         this.damage = damage;
