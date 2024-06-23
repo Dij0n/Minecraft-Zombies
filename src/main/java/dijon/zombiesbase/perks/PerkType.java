@@ -6,22 +6,22 @@ import org.bukkit.potion.PotionEffectType;
 
 public class PerkType {
 
-    public static Perk JUGGERNOG = new Perk("Juggernog", new JugAction());
+    public static Perk JUGGERNOG = new Perk("Juggernog", 2500, new JugAction());
 
-    public static Perk SPEEDCOLA = new Perk("Speed Cola", new SpeedAction());
+    public static Perk SPEEDCOLA = new Perk("Speed Cola", 3000, new SpeedAction());
 
-    public static Perk DOUBLETAP = new Perk("Double Tap Root Beer", new DoubleAction());
+    public static Perk DOUBLETAP = new Perk("Double Tap Root Beer", 2000, new DoubleAction());
 
-    public static Perk QUICKREVIVE = new Perk("Quick Revive", new QuickAction());
+    public static Perk QUICKREVIVE = new Perk("Quick Revive", 500, new QuickAction());
 
-    public static Perk STAMINUP = new Perk("Stamin-Up Soda", new StamiAction());
+    public static Perk STAMINUP = new Perk("Stamin-Up Soda", 2000, new StamiAction());
 
-    public static Perk PHDFLOPPER = new Perk("PhD Flopper", new PHDAction());
+    public static Perk PHDFLOPPER = new Perk("PhD Flopper", 2500, new PHDAction());
 
-    public static Perk MULEKICK = new Perk("Mule Kick", new MuleAction());
+    public static Perk MULEKICK = new Perk("Mule Kick", 4000, new MuleAction());
 
-    public static Perk ELECTRICCHERRY = new Perk("Electric Cherry", new ElectricAction());
+    public static Perk ELECTRICCHERRY = new Perk("Electric Cherry", 2000, new ElectricAction());
 
-    public static Perk WIDOWSWINE = new Perk("Widow's Wine", new WidowAction());
+    public static Perk WIDOWSWINE = new Perk("Widow's Wine", 4000, new WidowAction());
 
 }

@@ -8,10 +8,13 @@ public class Perk {
 
     String name;
 
+    int cost;
+
     PerkRunnable action;
 
-    public Perk(String name, PerkRunnable action) {
+    public Perk(String name, int cost, PerkRunnable action) {
         this.name = name;
+        this.cost = cost;
         this.action = action;
     }
 

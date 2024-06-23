@@ -2,11 +2,8 @@ package dijon.zombiesbase.playerdata;
 
 import dijon.zombiesbase.perks.Perk;
 import dijon.zombiesbase.shooting.Gun;
-import dijon.zombiesbase.shooting.GunType;
-import dijon.zombiesbase.utility.PluginGrabber;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
@@ -64,8 +61,8 @@ public class PlayerDataController {
     public int getPoints(){
         return PlayerDataManager.getPoints(p);
     }
-    public void reload(){
-        PlayerDataManager.reload(p);
+    public void reloadAttempt(){
+        PlayerDataManager.reloadAttempt(p);
     }
     public Location getGunSmokeLocation(){
         return PlayerDataManager.getGunSmokeLocation(p);

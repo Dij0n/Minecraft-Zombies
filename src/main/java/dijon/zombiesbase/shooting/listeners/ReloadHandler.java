@@ -1,14 +1,9 @@
 package dijon.zombiesbase.shooting.listeners;
 
 import dijon.zombiesbase.ZombiesBase;
-import dijon.zombiesbase.playerdata.PlayerData;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
-import dijon.zombiesbase.playerdata.Status;
 import dijon.zombiesbase.shooting.GunType;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +23,7 @@ public class ReloadHandler implements Listener {
 
         if(GunType.isGun(e.getOffHandItem())){
 
-            PlayerDataManager.reload(p);
+            PlayerDataManager.reloadAttempt(p);
 
             e.setCancelled(true);
 

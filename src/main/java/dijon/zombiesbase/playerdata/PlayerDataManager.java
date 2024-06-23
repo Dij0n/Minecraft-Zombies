@@ -3,7 +3,6 @@ package dijon.zombiesbase.playerdata;
 import dijon.zombiesbase.perks.Perk;
 import dijon.zombiesbase.perks.PerkType;
 import dijon.zombiesbase.shooting.Gun;
-import dijon.zombiesbase.shooting.GunType;
 import dijon.zombiesbase.utility.PluginGrabber;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -91,7 +90,7 @@ public class PlayerDataManager {
 
 
 
-    public static void reload(Player p){
+    public static void reloadAttempt(Player p){
 
         if(getMainGun(p).getAmmo() >= getMainGun(p).getMaxClip()) return;
         if(getStatus(p).equals(Status.RELOADING)) return;
@@ -100,6 +99,10 @@ public class PlayerDataManager {
 
         if(PlayerDataManager.hasPerk(p, PerkType.SPEEDCOLA)){ //PERK CHECK
             reloadTicks /= 2;
+        }
+
+        if(PlayerDataManager.hasPerk(p, PerkType.ELECTRICCHERRY)){ //PERK CHECK
+            p.getWorld().strikeLightning(p.getLocation());
         }
 
         setStatus(p, Status.RELOADING);
