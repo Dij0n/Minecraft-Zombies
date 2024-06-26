@@ -19,7 +19,7 @@ public class TemporaryHUD extends BukkitRunnable {
             int reserveAmmo = gun.getReserveAmmo();
             int points = pd.getPoints();
 
-            p.sendActionBar("§b§o§l" + points + "               §r§l" + ammo + " §o| §r" + reserveAmmo);
+            p.sendActionBar("§b§o§l" + points + "   §r§l" + ammo + " §o| §r" + reserveAmmo);
 
 
         }

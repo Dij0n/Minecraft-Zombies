@@ -1,6 +1,8 @@
 package dijon.zombiesbase;
 
 import dijon.zombiesbase.commands.givegun;
+import dijon.zombiesbase.commands.perk;
+import dijon.zombiesbase.commands.perktabcomplete;
 import dijon.zombiesbase.hud.TemporaryHUD;
 import dijon.zombiesbase.perks.PerkHandler;
 import dijon.zombiesbase.playerdata.JoinInitializer;
@@ -34,6 +36,8 @@ public final class ZombiesBase extends JavaPlugin {
 
         //-------COMMANDS----------
         this.getCommand("givegun").setExecutor(new givegun());
+        this.getCommand("perk").setExecutor(new perk());
+        this.getCommand("perk").setTabCompleter(new perktabcomplete());
 
         //------RUNNABLES----------
         new TemporaryHUD().runTaskTimer(this, 0, 1);

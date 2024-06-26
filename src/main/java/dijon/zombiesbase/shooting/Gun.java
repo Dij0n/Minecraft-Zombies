@@ -35,6 +35,7 @@ public class Gun {
         this.dust = dust;
         this.sound = sound;
         this.bloomAngle = bloomAngle;
+        this.fullAuto = fullAuto;
 
         this.ammo = maxClip;
         this.reserveAmmo = maxAmmo;
@@ -51,6 +52,7 @@ public class Gun {
         this.dust = gun.dust;
         this.sound = gun.sound;
         this.bloomAngle = gun.bloomAngle;
+        this.fullAuto = gun.fullAuto;
 
         this.ammo = gun.maxClip;
         this.reserveAmmo = gun.maxAmmo;

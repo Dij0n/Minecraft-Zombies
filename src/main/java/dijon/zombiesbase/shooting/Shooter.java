@@ -1,19 +1,21 @@
 package dijon.zombiesbase.shooting;
 
 import dijon.zombiesbase.perks.PerkType;
+import dijon.zombiesbase.playerdata.PlayerDataController;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
 import dijon.zombiesbase.shooting.listeners.ShootHandler;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 public class Shooter extends BukkitRunnable {
 
@@ -24,12 +26,7 @@ public class Shooter extends BukkitRunnable {
     double timer;
     double holdTimer;
 
-    float pitch;
-    float sumPitch;
-    Location recoilLocation;
-
-    boolean fullAuto;
-    boolean semiAutoShot;
+    PlayerDataController pd;
 
 
     public Shooter(Player p){
@@ -37,7 +34,9 @@ public class Shooter extends BukkitRunnable {
         this.gunCopy = new Gun(PlayerDataManager.getMainGun(p));
         this.firePerSecond = gunCopy.getFirePerSecond();
 
-        if(PlayerDataManager.hasPerk(p, PerkType.DOUBLETAP)){ //PERK CHECK
+        pd = new PlayerDataController(p);
+
+        if(pd.hasPerk(PerkType.DOUBLETAP)){ //PERK CHECK
             firePerSecond *= 1.33;
             gunCopy.damage *= 2;
         }
@@ -52,13 +51,8 @@ public class Shooter extends BukkitRunnable {
 
     @Override
     public void run() {
-        recoilAdjust();
-
         if(timer >= firePerSecond){
-            if(!semiAutoShot && gunCopy.fullAuto){ //Detection for semi-automatic guns
-                shoot();
-            }
-            semiAutoShot = true;
+            shoot();
             timer = 0;
         }
 
@@ -78,21 +72,23 @@ public class Shooter extends BukkitRunnable {
     }
 
     public void shoot(){
+        p.setSprinting(true);
+        Bukkit.getScheduler().runTaskLater(PluginGrabber.plugin, () -> {
+            p.setSprinting(false);
+        }, 1);
+        if(pd.getStatus().equals(Status.RELOADING)) return;
 
-        if(PlayerDataManager.getStatus(p).equals(Status.RELOADING)) return;
-
-        if(PlayerDataManager.getMainGun(p).getAmmo() == 0){
-            p.getWorld().spawnParticle(gunCopy.getParticle(), PlayerDataManager.getGunSmokeLocation(p), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
+        if(pd.getMainGun().getAmmo() == 0){
+            p.getWorld().spawnParticle(gunCopy.getParticle(), pd.getGunSmokeLocation(), 5, new Particle.DustOptions(Color.GRAY, 1.0F));
             p.playSound(p, Sound.ITEM_FLINTANDSTEEL_USE, 1, 0.75f);
+            pd.reloadAttempt();
             return;
         } //Check if clip is empty
 
-        PlayerDataManager.getMainGun(p).reduceAmmo();
+        pd.getMainGun().reduceAmmo();
         Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust());
         p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
         p.playSound(p, gunCopy.getSound(), 1, 2);
-
-        pitch = 15; //20 is also a good choice
 
         if(ray.getEntities() != null) shotLanded(ray);
 
@@ -100,49 +96,33 @@ public class Shooter extends BukkitRunnable {
 
     public void shotLanded(Raycaster ray){
         LivingEntity victim = (LivingEntity) ray.getEntity();
+        if(victim.isDead()) return;
 
         if(ray.isHeadshot()){
             p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, ray.getFinalLoc(), 3);
             p.playSound(p, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 2);
-        } //TEMP --- Particle stuff
+        }
 
-        PlayerDataManager.increasePoints(p, 10);
+        pd.increasePoints(10);
 
         if(victim.getHealth() - gunCopy.getDamage() <= 0){
             if(ray.isHeadshot()){
-                PlayerDataManager.increasePoints(p, 90); //Ten less since they get the 10 points from the hit
+                pd.increasePoints(90); //Ten less since they get the 10 points from the hit
             }else{
-                PlayerDataManager.increasePoints(p, 50);
+                pd.increasePoints(50);
             }
         }
 
         victim.damage(gunCopy.getDamage());
+        victim.setNoDamageTicks(1);
     }
 
     public void fullCancel(){
         ShootHandler.holdMap.remove(p);
-        PlayerDataManager.setStatus(p, Status.IDLE);
+        if(!pd.getStatus().equals(Status.RELOADING)){
+            pd.setStatus(Status.IDLE);
+        }
         cancel();
-    }
-
-    private void recoilAdjust(){ //MAYBE????????????
-        if(pitch == 0) return;
-        setPitch();
-        if(pitch > 0){
-            sumPitch = pitch;
-            pitch = -6;
-        }
-        if(pitch < 0){
-            pitch++;
-            sumPitch += pitch;
-            if(pitch >= 0 || sumPitch <= 0) pitch = 0;
-        }
-    }
-
-    private void setPitch(){
-        recoilLocation = p.getEyeLocation();
-        recoilLocation.setPitch(recoilLocation.getPitch() + pitch);
-        p.teleport(recoilLocation);
     }
 
     
