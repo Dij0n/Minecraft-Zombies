@@ -26,7 +26,7 @@ public class GunType {
             120,
             20,
             1,
-            15,
+            18,
             1,
             Math.PI/24,
             true,

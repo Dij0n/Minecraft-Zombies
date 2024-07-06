@@ -4,6 +4,7 @@ import dijon.zombiesbase.perks.PerkType;
 import dijon.zombiesbase.playerdata.PlayerDataController;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
+import dijon.zombiesbase.shooting.recoil.Recoiler;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
 import dijon.zombiesbase.shooting.listeners.ShootHandler;
@@ -24,7 +25,10 @@ public class Shooter extends BukkitRunnable {
     Gun gunCopy;
     double firePerSecond;
     double timer;
+    double fireRate;
     double holdTimer;
+    Recoiler recoiler;
+
 
     PlayerDataController pd;
 
@@ -35,28 +39,32 @@ public class Shooter extends BukkitRunnable {
         this.firePerSecond = gunCopy.getFirePerSecond();
 
         pd = new PlayerDataController(p);
+        recoiler = new Recoiler(p);
 
         if(pd.hasPerk(PerkType.DOUBLETAP)){ //PERK CHECK
             firePerSecond *= 1.33;
             gunCopy.damage *= 2;
         }
 
-        if(firePerSecond != 0) firePerSecond = 1/firePerSecond;
-        firePerSecond *= 20;
-        timer = firePerSecond + 1;
-        holdTimer = Math.max(5, firePerSecond);
+
+
+        if(firePerSecond != 0) fireRate = 1/firePerSecond;
+        fireRate *= 20;
+        timer = fireRate + 1;
+        holdTimer = Math.max(5, fireRate);
 
         runTaskTimer(PluginGrabber.plugin, 0, 1);
     }
 
     @Override
     public void run() {
-        if(timer >= firePerSecond){
+        recoiler.zoomIn();
+        if(timer >= fireRate){
             shoot();
             timer = 0;
         }
 
-        if(timer <= firePerSecond){
+        if(timer <= fireRate){
             timer++;
         }
 
@@ -72,10 +80,9 @@ public class Shooter extends BukkitRunnable {
     }
 
     public void shoot(){
-        p.setSprinting(true);
-        Bukkit.getScheduler().runTaskLater(PluginGrabber.plugin, () -> {
-            p.setSprinting(false);
-        }, 1);
+
+        recoiler.zoomOut();
+
         if(pd.getStatus().equals(Status.RELOADING)) return;
 
         if(pd.getMainGun().getAmmo() == 0){

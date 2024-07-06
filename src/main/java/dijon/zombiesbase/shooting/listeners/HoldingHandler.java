@@ -5,6 +5,7 @@ import dijon.zombiesbase.playerdata.PlayerDataController;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.shooting.Gun;
 import dijon.zombiesbase.shooting.GunType;
+import dijon.zombiesbase.shooting.recoil.Recoiler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
