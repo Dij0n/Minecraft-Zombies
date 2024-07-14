@@ -92,7 +92,7 @@ public class Gun {
 
 
     //----------------------------
-    //---GETTER AND SETTER HELL---
+    //---GETTER AND SETTERS-------
     //----------------------------
 
     //"This is where we send the evil ones"
