@@ -10,49 +10,50 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerDataManager {
-    private static HashMap<Player, PlayerData> playerData = new HashMap<>();
+    private static final HashMap<UUID, PlayerData> playerData = new HashMap<>();
 
     //-----INITALIZER-----
     public static void initialize(Player p){
-        if(!playerData.containsKey(p)){
+        if(!playerData.containsKey(p.getUniqueId())){
             PlayerData pd = new PlayerData();
-            playerData.put(p, pd);
+            playerData.put(p.getUniqueId(), pd);
         }
     }
 
     //-------GUNS-------
     public static void setMainGun(Player p, Gun gun){
-        playerData.get(p).setGun(gun);
+        playerData.get(p.getUniqueId()).setGun(gun);
     }
     public static Gun getMainGun(Player p){
-        return playerData.get(p).getGun();
+        return playerData.get(p.getUniqueId()).getGun();
     }
 
 
     //-------STATUS------
     public static void setStatus(Player p, Status s){
-        playerData.get(p).setStatus(s);
+        playerData.get(p.getUniqueId()).setStatus(s);
     }
     public static Status getStatus(Player p){
-        return playerData.get(p).getStatus();
+        return playerData.get(p.getUniqueId()).getStatus();
     }
 
     //-------PERKS-------
     public static void addPerk(Player p, Perk perk){
-        playerData.get(p).addPerk(perk);
+        playerData.get(p.getUniqueId()).addPerk(perk);
         perk.getAction().runP(p);
     }
     public static boolean hasPerk(Player p, Perk perk){
-        return playerData.get(p).getPerks().contains(perk);
+        return playerData.get(p.getUniqueId()).getPerks().contains(perk);
     }
     public static void resetPerks(Player p){
-        playerData.get(p).getPerks().clear();
+        playerData.get(p.getUniqueId()).getPerks().clear();
         p.clearActivePotionEffects();
     }
     public static ArrayList<Perk> getPerks(Player p){
-        return playerData.get(p).getPerks();
+        return playerData.get(p.getUniqueId()).getPerks();
     }
 
 
@@ -63,27 +64,27 @@ public class PlayerDataManager {
 
     //------POINTS------
     public static void increasePoints(Player p, int points){
-        if(playerData.containsKey(p)){
-            playerData.get(p).incPoints(points);
+        if(playerData.containsKey(p.getUniqueId())){
+            playerData.get(p.getUniqueId()).incPoints(points);
         }else{
             PlayerData pd = new PlayerData();
-            playerData.put(p, pd);
+            playerData.put(p.getUniqueId(), pd);
         }
     }
     public static void decreasePoints(Player p, int points){
-        if(playerData.containsKey(p)){
-            playerData.get(p).decPoints(points);
+        if(playerData.containsKey(p.getUniqueId())){
+            playerData.get(p.getUniqueId()).decPoints(points);
         }else{
             PlayerData pd = new PlayerData();
-            playerData.put(p, pd);
+            playerData.put(p.getUniqueId(), pd);
         }
     }
     public static int getPoints(Player p){
-        if(playerData.containsKey(p)){
-            return playerData.get(p).getPoints();
+        if(playerData.containsKey(p.getUniqueId())){
+            return playerData.get(p.getUniqueId()).getPoints();
         }else{
             PlayerData pd = new PlayerData();
-            playerData.put(p, pd);
+            playerData.put(p.getUniqueId(), pd);
             return 0;
         }
     }

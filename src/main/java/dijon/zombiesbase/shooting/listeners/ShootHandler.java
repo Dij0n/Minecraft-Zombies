@@ -14,10 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class ShootHandler implements Listener {
 
-    public static HashMap<Player, Shooter> holdMap = new HashMap<>();
+    public static HashMap<UUID, Shooter> holdMap = new HashMap<>();
     public ShootHandler(ZombiesBase plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
@@ -41,13 +42,13 @@ public class ShootHandler implements Listener {
     }
 
     public void refreshHolder(Player p){
-        if(!holdMap.containsKey(p)) return;
-        holdMap.get(p).refresh();
+        if(!holdMap.containsKey(p.getUniqueId())) return;
+        holdMap.get(p.getUniqueId()).refresh();
     }
 
     public void addHolder(Player p){
-        if(holdMap.containsKey(p)) return;
-        holdMap.put(p, new Shooter(p));
+        if(holdMap.containsKey(p.getUniqueId())) return;
+        holdMap.put(p.getUniqueId(), new Shooter(p));
     }
 
 

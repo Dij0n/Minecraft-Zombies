@@ -19,7 +19,7 @@ public class GunType {
             0,
             false,
             Sound.BLOCK_CHAIN_HIT,
-            Particle.REDSTONE,
+            Particle.DUST,
             new Particle.DustOptions(Color.BLACK, 1.0F));
     public static Gun RED = new Gun(
             1,
@@ -31,7 +31,7 @@ public class GunType {
             Math.PI/24,
             true,
             Sound.BLOCK_CHAIN_HIT,
-            Particle.REDSTONE,
+            Particle.DUST,
             new Particle.DustOptions(Color.RED, 1.0F));
     public static Gun GREEN = new Gun(
             2,
@@ -43,7 +43,7 @@ public class GunType {
             Math.PI/64,
             false,
             Sound.BLOCK_RESPAWN_ANCHOR_DEPLETE,
-            Particle.REDSTONE,
+            Particle.DUST,
             new Particle.DustOptions(Color.GREEN, 1.0F));
     public static Gun BLUE = new Gun(
             3,
@@ -55,7 +55,7 @@ public class GunType {
             Math.PI/18,
             true,
             Sound.ENTITY_PLAYER_ATTACK_WEAK,
-            Particle.REDSTONE,
+            Particle.DUST,
             new Particle.DustOptions(Color.BLUE, 1.0F));
 
     public GunType(){

@@ -47,22 +47,33 @@ public class Raycaster {
         raycast(false);
     }
 
-    public Raycaster(Player p, double maxDist, double interval, Particle particle, Particle.DustOptions dust) {
+    public Raycaster(Player p, double maxDist, double interval, Particle particle, Particle.DustOptions dust, boolean bloomEnabled) {
         this.p = p;
         this.initalLoc = p.getEyeLocation();
         this.maxDist = maxDist;
         this.particle = particle;
         this.dust = dust;
         this.interval = interval;
-        bloomifiedVector = randomBloomModifier(p.getEyeLocation().getDirection());
+
+        if(bloomEnabled){
+            bloomifiedVector = randomBloomModifier(p.getEyeLocation().getDirection());
+        }else{
+            bloomifiedVector = p.getEyeLocation().getDirection();
+        }
+
         bloomifiedVector.multiply(0.5);
+
 
         raycast(true);
     }
 
+
     private void moveForward(){
         initalLoc.add(bloomifiedVector);
     }
+
+
+
     private boolean blockCheck(){
         return p.getWorld().getBlockAt(initalLoc).getType() != Material.AIR;
     }

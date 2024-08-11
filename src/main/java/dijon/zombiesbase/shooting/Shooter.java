@@ -4,19 +4,15 @@ import dijon.zombiesbase.perks.PerkType;
 import dijon.zombiesbase.playerdata.PlayerDataController;
 import dijon.zombiesbase.playerdata.PlayerDataManager;
 import dijon.zombiesbase.playerdata.Status;
+import dijon.zombiesbase.shooting.pointdisplays.PointDisplay;
 import dijon.zombiesbase.shooting.recoil.Recoiler;
 import dijon.zombiesbase.utility.PluginGrabber;
 import dijon.zombiesbase.utility.Raycaster;
 import dijon.zombiesbase.shooting.listeners.ShootHandler;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 public class Shooter extends BukkitRunnable {
 
@@ -58,7 +54,12 @@ public class Shooter extends BukkitRunnable {
 
     @Override
     public void run() {
-        recoiler.zoomIn();
+        if(p.isSneaking()){
+            recoiler.normalZoomADS();
+        }else{
+            recoiler.normalZoom();
+        }
+
         if(timer >= fireRate){
             shoot();
             timer = 0;
@@ -80,8 +81,11 @@ public class Shooter extends BukkitRunnable {
     }
 
     public void shoot(){
-
-        recoiler.zoomOut();
+        if(p.isSneaking()){
+            recoiler.zoomOutADS();
+        }else{
+            recoiler.zoomOut();
+        }
 
         if(pd.getStatus().equals(Status.RELOADING)) return;
 
@@ -93,7 +97,7 @@ public class Shooter extends BukkitRunnable {
         } //Check if clip is empty
 
         pd.getMainGun().reduceAmmo();
-        Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust());
+        Raycaster ray = new Raycaster(p, 20, 4, gunCopy.getParticle(), gunCopy.getDust(), !p.isSneaking());
         p.getWorld().spawnParticle(gunCopy.getParticle(), ray.getFinalLoc(), 5, gunCopy.getDust());
         p.playSound(p, gunCopy.getSound(), 1, 2);
 
@@ -106,26 +110,44 @@ public class Shooter extends BukkitRunnable {
         if(victim.isDead()) return;
 
         if(ray.isHeadshot()){
-            p.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, ray.getFinalLoc(), 3);
+            p.getWorld().spawnParticle(Particle.GLOW_SQUID_INK, ray.getFinalLoc(), 5, 0, 0, 0, 0); //TEMPORARY HEADSHOT DETECTION
             p.playSound(p, Sound.ENTITY_ARROW_HIT_PLAYER, 1, 2);
         }
 
+        int totalPoints = 0;
+
         pd.increasePoints(10);
+        totalPoints += 10;
 
         if(victim.getHealth() - gunCopy.getDamage() <= 0){
             if(ray.isHeadshot()){
                 pd.increasePoints(90); //Ten less since they get the 10 points from the hit
+                totalPoints += 90;
             }else{
                 pd.increasePoints(50);
+                totalPoints += 50;
             }
         }
+
+        summonDisplay(totalPoints, ray.getFinalLoc());
 
         victim.damage(gunCopy.getDamage());
         victim.setNoDamageTicks(1);
     }
 
+    public void summonDisplay(int totalPoints, Location loc){
+
+        float scale = switch (totalPoints) {
+            case 10 -> 1.5F;
+            case 100 -> 2F;
+            default -> 1.75F;
+        };
+
+        new PointDisplay(p,"+" + totalPoints, loc, scale);
+    }
+
     public void fullCancel(){
-        ShootHandler.holdMap.remove(p);
+        ShootHandler.holdMap.remove(p.getUniqueId());
         if(!pd.getStatus().equals(Status.RELOADING)){
             pd.setStatus(Status.IDLE);
         }

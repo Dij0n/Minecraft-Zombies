@@ -35,7 +35,7 @@ public class HoldingHandler implements Listener {
         if(GunType.isGun(inHand)){
             int customMD = inHand.getItemMeta().getCustomModelData();
             Gun gun = new Gun(GunType.getGun(customMD));
-            if(ShootHandler.holdMap.get(e.getPlayer()) != null) ShootHandler.holdMap.get(p).fullCancel();
+            if(ShootHandler.holdMap.get(e.getPlayer().getUniqueId()) != null) ShootHandler.holdMap.get(p.getUniqueId()).fullCancel();
             pd.setMainGun(gun);
         }else{
             //PlayerDataManager.setMainGun(e.getPlayer(), GunType.getGun(0));
