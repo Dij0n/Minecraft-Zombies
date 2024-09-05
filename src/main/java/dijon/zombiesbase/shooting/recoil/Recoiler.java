@@ -3,6 +3,10 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.WrappedAttribute;
+import com.comphenix.protocol.wrappers.WrappedDataValue;
+import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedServerPing;
+import net.kyori.adventure.resource.ResourcePackRequest;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
@@ -43,6 +47,8 @@ public class Recoiler {
 
 
     private void initializeZooms(){
+
+
         zoomOutPacket = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.UPDATE_ATTRIBUTES);
         zoomOutPacket.getIntegers().write(0, p.getEntityId());
 

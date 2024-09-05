@@ -18,6 +18,7 @@ public class ADSHandler implements Listener {
     @EventHandler
     public void adsActivate(PlayerToggleSneakEvent e){
         Recoiler r = new Recoiler(e.getPlayer());
+
         if(e.isSneaking()){
             r.normalZoomADS();
         }else{
